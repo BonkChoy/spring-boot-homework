@@ -1,0 +1,19 @@
+# DataSource Config
+spring:
+  profiles:
+    active: dev
+  thymeleaf:
+    cache: false
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/homework
+    username: root
+    password: shuaihua
+  redis:
+    sentinel:
+      master: mymaster
+      nodes: 47.106.38.101:26379,47.106.38.101:26380
+logging:
+  level:
+    root: INFO
+    org.springframework.web: DEBUG
