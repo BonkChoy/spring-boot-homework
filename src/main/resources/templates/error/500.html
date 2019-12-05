@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
 <head>
   <meta charset="utf-8">
   <title>基于 layui 的极简社区页面模版</title>
@@ -16,13 +16,14 @@
 <div th:include="common/templates :: header-nav"></div>
 
 <div class="layui-container fly-marginTop">
-   <div class="fly-panel">
-     <div class="fly-none">
-       <h2><i class="iconfont icon-404"></i></h2>
-       <p th:text="${msg}"></p>
-     </div>
-   </div>
+	<div class="fly-panel">
+	  <div class="fly-none">
+	    <h2><i class="iconfont icon-404"></i></h2>
+	    <p th:text="${msg}"></p>
+	  </div>
+	</div>
 </div>
+
 
 <!--尾-->
 <div th:include="common/templates :: footer"></div>

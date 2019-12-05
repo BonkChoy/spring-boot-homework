@@ -18,6 +18,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.imageio.ImageIO;
@@ -34,7 +35,7 @@ import java.util.Map;
  */
 @Slf4j
 @Controller
-public class IndexController extends BaseController{
+public class IndexController extends BaseController {
 
     private static final String KAPTCHA_SESSION_KEY = "KAPTCHA_SESSION_KEY";
 
@@ -49,15 +50,15 @@ public class IndexController extends BaseController{
 //        page.setSize(10);
 //
 //        IPage<Map<String, Object>> pageData = postService.pageMaps(page, null);
-        List<Map<String,Object>> pageData = postService.listMaps(new QueryWrapper<Post>().orderByDesc("level").last(" limit 5 "));
+        List<Map<String, Object>> pageData = postService.listMaps(new QueryWrapper<Post>().orderByDesc("level").last(" limit 5 "));
 
         //添加关联的用户信息
         userService.join(pageData, "user_id");
 
         //添加关联的分类信息
-        categoryService.join(pageData,"category_id");
+        categoryService.join(pageData, "category_id");
 
-        req.setAttribute("pageData", pageData);
+        req.setAttribute("levelPosts", pageData);
 
         return "index";
     }
@@ -70,29 +71,29 @@ public class IndexController extends BaseController{
         String text = producer.createText();
         BufferedImage image = producer.createImage(text);
 
-        SecurityUtils.getSubject().getSession().setAttribute(KAPTCHA_SESSION_KEY,text);
+        SecurityUtils.getSubject().getSession().setAttribute(KAPTCHA_SESSION_KEY, text);
         ServletOutputStream outputStream = response.getOutputStream();
 
-        ImageIO.write(image,"jpg",outputStream);
-
-
+        ImageIO.write(image, "jpg", outputStream);
     }
 
     @GetMapping("/login")
-    public String login() { return "auth/login"; }
+    public String login() {
+        return "auth/login";
+    }
 
     @PostMapping("/login")
     @ResponseBody
-    public R doLogin(String username,String password) {
+    public R doLogin(String username, String password) {
 
-        if(StringUtils.isEmpty(username) || StringUtils.isEmpty(password)){
+        if (StringUtils.isEmpty(username) || StringUtils.isEmpty(password)) {
             return R.failed("用户名或密码不能为空！");
         }
 
-        AuthenticationToken token = new UsernamePasswordToken(username,SecureUtil.md5(password));
+        AuthenticationToken token = new UsernamePasswordToken(username, SecureUtil.md5(password));
         try {
             SecurityUtils.getSubject().login(token);
-        }catch (AuthenticationException e){
+        } catch (AuthenticationException e) {
             if (e instanceof UnknownAccountException) {
                 return R.failed("用户不存在");
             }
@@ -104,6 +105,7 @@ public class IndexController extends BaseController{
             }
             return R.failed("用户认证失败");
         }
+
         return R.ok("登陆成功！");
     }
 
@@ -116,15 +118,20 @@ public class IndexController extends BaseController{
 
     @ResponseBody
     @PostMapping("/register")
-    public R doRegister(User user, String captcha,String repass) {
+    public R doRegister(User user, String captcha, String repass) {
 
         String kaptcha = (String) SecurityUtils.getSubject().getSession().getAttribute("KAPTCHA_SESSION_KEY");
-        if(!kaptcha.equalsIgnoreCase(captcha)){
+        if (!kaptcha.equalsIgnoreCase(captcha)) {
             //log.error("session:" + kaptcha + "input:" + captcha);
-           return R.failed("验证码不正确");
+            return R.failed("验证码不正确");
         }
-        R r = userService.register(user,repass);
+        R r = userService.register(user, repass);
         return r;
     }
 
+    @GetMapping("/user/logout")
+    public String logout() {
+        SecurityUtils.getSubject().logout();
+        return "redirect:/";
+    }
 }

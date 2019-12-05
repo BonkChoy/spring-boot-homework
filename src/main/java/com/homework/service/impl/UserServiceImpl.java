@@ -72,6 +72,7 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
 
         BeanUtil.copyProperties(user, profile);
 
+
         //把通知和私信数量查出来
 
 

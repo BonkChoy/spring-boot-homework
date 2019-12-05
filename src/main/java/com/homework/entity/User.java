@@ -3,18 +3,17 @@ package com.homework.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.baomidou.mybatisplus.annotation.TableId;
-
-import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author lv-success
- * @since 2018-10-14
+ * @since 2018-12-03
  */
 public class User extends Model<User> {
 
@@ -51,6 +50,8 @@ public class User extends Model<User> {
      */
     private Integer point;
 
+    private String sign;
+
     /**
      * 性别
      */
@@ -61,10 +62,12 @@ public class User extends Model<User> {
      */
     private String wechat;
 
+    private String vipLevel;
+
     /**
      * 生日
      */
-    private LocalDateTime birthday;
+    private Date birthday;
 
     /**
      * 头像
@@ -150,6 +153,14 @@ public class User extends Model<User> {
         this.point = point;
     }
 
+    public String getSign() {
+        return sign;
+    }
+
+    public void setSign(String sign) {
+        this.sign = sign;
+    }
+
     public String getGender() {
         return gender;
     }
@@ -166,12 +177,12 @@ public class User extends Model<User> {
         this.wechat = wechat;
     }
 
-    public LocalDateTime getBirthday() {
-        return birthday;
+    public String getVipLevel() {
+        return vipLevel;
     }
 
-    public void setBirthday(LocalDateTime birthday) {
-        this.birthday = birthday;
+    public void setVipLevel(String vipLevel) {
+        this.vipLevel = vipLevel;
     }
 
     public String getAvatar() {
@@ -204,6 +215,14 @@ public class User extends Model<User> {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public Date getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(Date birthday) {
+        this.birthday = birthday;
     }
 
     public Date getLasted() {
@@ -244,8 +263,10 @@ public class User extends Model<User> {
         ", email=" + email +
         ", mobile=" + mobile +
         ", point=" + point +
+        ", sign=" + sign +
         ", gender=" + gender +
         ", wechat=" + wechat +
+        ", vipLevel=" + vipLevel +
         ", birthday=" + birthday +
         ", avatar=" + avatar +
         ", postCount=" + postCount +

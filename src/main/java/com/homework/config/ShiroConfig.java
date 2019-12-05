@@ -1,13 +1,16 @@
 package com.homework.config;
 
+import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
 import com.homework.shiro.OAuth2Realm;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.filter.DelegatingFilterProxy;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -25,6 +28,15 @@ public class ShiroConfig {
         return securityManager;
     }
 
+    /*@Bean
+    public FilterRegistrationBean delegatingFilterProxy(){
+        FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean();
+        DelegatingFilterProxy proxy = new DelegatingFilterProxy();
+        proxy.setTargetFilterLifecycle(true);
+        proxy.setTargetBeanName("shiroFilter");
+        filterRegistrationBean.setFilter(proxy);
+        return filterRegistrationBean;
+    }*/
     /**
     *  Qualifier：指定bean的名称，让Spring容器知道加载哪个bean
     * */
@@ -45,9 +57,16 @@ public class ShiroConfig {
         hashMap.put("/user*", "user");
         hashMap.put("/user/**", "user");
         hashMap.put("/post/**", "user");
+        //hashMap.put("/error**", "anon");
+        //hashMap.put("/templates/**", "user");
         filterFactoryBean.setFilterChainDefinitionMap(hashMap);
 
         return filterFactoryBean;
     }
 
+    //用于thymeleaf模板使用shiro标签
+    @Bean
+    public ShiroDialect shiroDialect() {
+        return new ShiroDialect();
+    }
 }

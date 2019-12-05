@@ -24,7 +24,7 @@ public class GlobalExceptionHandler {
         ModelAndView mav = new ModelAndView();
         mav.addObject("exception", e);
         mav.addObject("url", req.getRequestURL());
-        mav.setViewName("error");
+        mav.setViewName("error/404");
         return mav;
     }
 
@@ -33,9 +33,19 @@ public class GlobalExceptionHandler {
     public R jsonErrorHandler(HttpServletRequest req, MyException e) throws Exception {
 
         //TODO 错误日志处理
-
-
         return R.failed(e.getMessage());
     }
 
+    @ExceptionHandler(value = IllegalArgumentException.class)
+    public  ModelAndView assetExceptionHandler(HttpServletRequest req,IllegalArgumentException e) {
+
+        log.error("-------------捕捉到Asset异常---------------");
+
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("msg",e.getMessage());
+        modelAndView.addObject("url",req.getRequestURL());
+        modelAndView.setViewName("error/404");
+
+        return  modelAndView;
+    }
 }
