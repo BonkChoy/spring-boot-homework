@@ -2,6 +2,7 @@ package com.homework.controller;
 
 import com.homework.service.CategoryService;
 import com.homework.service.PostService;
+import com.homework.service.UserCollectionService;
 import com.homework.service.UserService;
 import com.homework.shiro.AccountProfile;
 import org.apache.shiro.SecurityUtils;
@@ -22,6 +23,9 @@ public class BaseController {
 
     @Autowired
     CategoryService categoryService;
+
+    @Autowired
+    UserCollectionService userCollectionService;
 
     protected AccountProfile getProfile() {
        return (AccountProfile) SecurityUtils.getSubject().getPrincipal();
