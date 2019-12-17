@@ -11,7 +11,7 @@
  Target Server Version : 50725
  File Encoding         : 65001
 
- Date: 05/12/2019 22:32:12
+ Date: 17/12/2019 23:03:55
 */
 
 SET NAMES utf8mb4;
@@ -32,8 +32,8 @@ CREATE TABLE `category`  (
   `parent_id` bigint(32) UNSIGNED NULL DEFAULT NULL COMMENT '父级分类的ID',
   `meta_keywords` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT 'SEO关键字',
   `meta_description` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT 'SEO描述内容',
-  `created` datetime NULL DEFAULT NULL COMMENT '创建日期',
-  `modified` datetime NULL DEFAULT NULL,
+  `created` datetime(0) NULL DEFAULT NULL COMMENT '创建日期',
+  `modified` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
@@ -58,8 +58,8 @@ CREATE TABLE `comment`  (
   `vote_down` int(11) UNSIGNED NOT NULL DEFAULT 0 COMMENT '“踩”的数量',
   `level` tinyint(2) UNSIGNED NOT NULL DEFAULT 0 COMMENT '置顶等级',
   `status` tinyint(2) NULL DEFAULT NULL COMMENT '评论的状态',
-  `created` datetime NOT NULL COMMENT '评论的时间',
-  `modified` datetime NULL DEFAULT NULL COMMENT '评论的更新时间',
+  `created` datetime(0) NOT NULL COMMENT '评论的时间',
+  `modified` datetime(0) NULL DEFAULT NULL COMMENT '评论的更新时间',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
@@ -81,8 +81,8 @@ CREATE TABLE `post`  (
   `recommend` tinyint(1) NULL DEFAULT NULL COMMENT '是否为精华',
   `level` tinyint(2) NOT NULL DEFAULT 0 COMMENT '置顶等级',
   `status` tinyint(2) NULL DEFAULT NULL COMMENT '状态',
-  `created` datetime NULL DEFAULT NULL COMMENT '创建日期',
-  `modified` datetime NULL DEFAULT NULL COMMENT '最后更新日期',
+  `created` datetime(0) NULL DEFAULT NULL COMMENT '创建日期',
+  `modified` datetime(0) NULL DEFAULT NULL COMMENT '最后更新日期',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 13 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
@@ -134,14 +134,14 @@ CREATE TABLE `user`  (
   `gender` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '性别',
   `wechat` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '微信号',
   `vip_level` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT 'vip等级',
-  `modified` datetime NULL DEFAULT NULL COMMENT '最后修改时间',
-  `birthday` datetime NULL DEFAULT NULL COMMENT '生日',
+  `modified` datetime(0) NULL DEFAULT NULL COMMENT '最后修改时间',
+  `birthday` datetime(0) NULL DEFAULT NULL COMMENT '生日',
   `avatar` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '头像',
   `post_count` int(11) UNSIGNED NOT NULL DEFAULT 0 COMMENT '内容数量',
   `comment_count` int(11) UNSIGNED NOT NULL DEFAULT 0 COMMENT '评论数量',
   `status` tinyint(2) NOT NULL DEFAULT 0 COMMENT '状态',
-  `lasted` datetime NULL DEFAULT NULL COMMENT '最后的登陆时间',
-  `created` datetime NOT NULL COMMENT '创建日期',
+  `lasted` datetime(0) NULL DEFAULT NULL COMMENT '最后的登陆时间',
+  `created` datetime(0) NOT NULL COMMENT '创建日期',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
@@ -149,6 +149,25 @@ CREATE TABLE `user`  (
 -- Records of user
 -- ----------------------------
 INSERT INTO `user` VALUES (1, 'xiaoming', '1111', NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, 'https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg', 0, 0, 0, NULL, '2018-10-14 18:41:34');
-INSERT INTO `user` VALUES (2, 'shuaihua', '7a977024ceae22a499a80d9ea208ab34', 'admin@qq.com', NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, '/images/avatar/default.png', 0, 0, 0, '2019-12-05 22:06:05', '2019-07-14 22:24:37');
+INSERT INTO `user` VALUES (2, 'ZPLing_', '7a977024ceae22a499a80d9ea208ab34', 'admin@qq.com', NULL, 0, 'test', '1', NULL, NULL, NULL, NULL, 'http://localhost:10080/upload/avatar_2.jpg', 0, 0, 0, '2019-12-15 17:01:28', '2019-07-14 22:24:37');
+
+-- ----------------------------
+-- Table structure for user_collection
+-- ----------------------------
+DROP TABLE IF EXISTS `user_collection`;
+CREATE TABLE `user_collection`  (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `user_id` bigint(20) NOT NULL,
+  `post_id` bigint(20) NOT NULL,
+  `post_user_id` bigint(20) NOT NULL,
+  `created` datetime(0) NULL,
+  `modified` datetime(0) NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of user_collection
+-- ----------------------------
+INSERT INTO `user_collection` VALUES (1, 2, 2, 2, '2019-12-15 16:20:51', '2019-12-15 16:20:54');
 
 SET FOREIGN_KEY_CHECKS = 1;
