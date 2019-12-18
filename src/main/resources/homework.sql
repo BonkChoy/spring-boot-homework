@@ -32,8 +32,8 @@ CREATE TABLE `category`  (
   `parent_id` bigint(32) UNSIGNED NULL DEFAULT NULL COMMENT '父级分类的ID',
   `meta_keywords` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT 'SEO关键字',
   `meta_description` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT 'SEO描述内容',
-  `created` datetime(0) NULL DEFAULT NULL COMMENT '创建日期',
-  `modified` datetime(0) NULL DEFAULT NULL,
+  `created` datetime NULL DEFAULT NULL COMMENT '创建日期',
+  `modified` datetime NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
@@ -58,8 +58,8 @@ CREATE TABLE `comment`  (
   `vote_down` int(11) UNSIGNED NOT NULL DEFAULT 0 COMMENT '“踩”的数量',
   `level` tinyint(2) UNSIGNED NOT NULL DEFAULT 0 COMMENT '置顶等级',
   `status` tinyint(2) NULL DEFAULT NULL COMMENT '评论的状态',
-  `created` datetime(0) NOT NULL COMMENT '评论的时间',
-  `modified` datetime(0) NULL DEFAULT NULL COMMENT '评论的更新时间',
+  `created` datetime NOT NULL COMMENT '评论的时间',
+  `modified` datetime NULL DEFAULT NULL COMMENT '评论的更新时间',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
@@ -81,8 +81,8 @@ CREATE TABLE `post`  (
   `recommend` tinyint(1) NULL DEFAULT NULL COMMENT '是否为精华',
   `level` tinyint(2) NOT NULL DEFAULT 0 COMMENT '置顶等级',
   `status` tinyint(2) NULL DEFAULT NULL COMMENT '状态',
-  `created` datetime(0) NULL DEFAULT NULL COMMENT '创建日期',
-  `modified` datetime(0) NULL DEFAULT NULL COMMENT '最后更新日期',
+  `created` datetime NULL DEFAULT NULL COMMENT '创建日期',
+  `modified` datetime NULL DEFAULT NULL COMMENT '最后更新日期',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 13 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
@@ -134,14 +134,14 @@ CREATE TABLE `user`  (
   `gender` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '性别',
   `wechat` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '微信号',
   `vip_level` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT 'vip等级',
-  `modified` datetime(0) NULL DEFAULT NULL COMMENT '最后修改时间',
-  `birthday` datetime(0) NULL DEFAULT NULL COMMENT '生日',
+  `modified` datetime NULL DEFAULT NULL COMMENT '最后修改时间',
+  `birthday` datetime NULL DEFAULT NULL COMMENT '生日',
   `avatar` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '头像',
   `post_count` int(11) UNSIGNED NOT NULL DEFAULT 0 COMMENT '内容数量',
   `comment_count` int(11) UNSIGNED NOT NULL DEFAULT 0 COMMENT '评论数量',
   `status` tinyint(2) NOT NULL DEFAULT 0 COMMENT '状态',
-  `lasted` datetime(0) NULL DEFAULT NULL COMMENT '最后的登陆时间',
-  `created` datetime(0) NOT NULL COMMENT '创建日期',
+  `lasted` datetime NULL DEFAULT NULL COMMENT '最后的登陆时间',
+  `created` datetime NOT NULL COMMENT '创建日期',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
@@ -160,8 +160,8 @@ CREATE TABLE `user_collection`  (
   `user_id` bigint(20) NOT NULL,
   `post_id` bigint(20) NOT NULL,
   `post_user_id` bigint(20) NOT NULL,
-  `created` datetime(0) NULL,
-  `modified` datetime(0) NULL,
+  `created` datetime NULL,
+  `modified` datetime NULL,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 

@@ -57,7 +57,7 @@ public class MyGenerator {
 //        strategy.setTablePrefix(new String[]{""});// 此处可以修改为您的表前缀
 //        strategy.setNaming(NamingStrategy.remove_prefix_and_camel);// 表名生成策略
 //        strategy.setNaming(NamingStrategy.removePrefixAndCamel());// 表名生成策略
-        strategy.setInclude(new String[]{"user_collection"}); // 需要生成的表
+        strategy.setInclude(new String[]{"user_message"}); // 需要生成的表
         //strategy.setExclude(new String[]{"test_user"}); // 排除生成的表
         // 字段名生成策略
         strategy.setNaming(NamingStrategy.underline_to_camel);
