@@ -8,6 +8,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.homework.entity.Post;
 import com.homework.entity.User;
 import com.homework.entity.UserCollection;
+import com.homework.entity.UserMessage;
+import com.homework.service.CommentService;
 import com.homework.shiro.AccountProfile;
 import com.homework.utils.Constant;
 import lombok.extern.slf4j.Slf4j;
@@ -185,5 +187,22 @@ public class CenterController extends BaseController{
         userService.updateById(user);
 
         return R.ok(null);
+    }
+
+    @GetMapping("/message")
+    public  String message(@RequestParam(defaultValue = "1") Integer current,
+                           @RequestParam(defaultValue = "10") Integer PageSize){
+        Page<UserMessage> page = new Page<>();
+        page.setCurrent(current);
+        page.setSize(PageSize);
+
+        IPage<Map<String, Object>> pageData = userMessageService.pageMaps(page,new QueryWrapper<UserMessage>().eq("to_user_id",getProfileId()).orderByDesc("created"));
+
+        postService.join(pageData,"post_id");
+        commentService.join(pageData,"comment_id");
+        userService.join(pageData,"from_user_id");
+
+        req.setAttribute("pageData",pageData);
+        return "user/message";
     }
 }

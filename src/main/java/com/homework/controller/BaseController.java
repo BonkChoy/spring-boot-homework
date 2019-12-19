@@ -1,9 +1,6 @@
 package com.homework.controller;
 
-import com.homework.service.CategoryService;
-import com.homework.service.PostService;
-import com.homework.service.UserCollectionService;
-import com.homework.service.UserService;
+import com.homework.service.*;
 import com.homework.shiro.AccountProfile;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +23,12 @@ public class BaseController {
 
     @Autowired
     UserCollectionService userCollectionService;
+
+    @Autowired
+    UserMessageService userMessageService;
+
+    @Autowired
+    CommentService commentService;
 
     protected AccountProfile getProfile() {
        return (AccountProfile) SecurityUtils.getSubject().getPrincipal();
