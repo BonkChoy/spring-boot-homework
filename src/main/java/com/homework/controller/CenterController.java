@@ -205,4 +205,13 @@ public class CenterController extends BaseController{
         req.setAttribute("pageData",pageData);
         return "user/message";
     }
+
+    @ResponseBody
+    @PostMapping("/message/remove")
+    public R removeMsg(Long id, boolean all) {
+
+        QueryWrapper<UserMessage> wrapper = new QueryWrapper<UserMessage>().eq("id",getProfileId()).eq(!all,"id",id);
+        boolean res = userMessageService.remove(wrapper);
+        return res? R.ok(null) : R.failed("删除失败");
+    }
 }
