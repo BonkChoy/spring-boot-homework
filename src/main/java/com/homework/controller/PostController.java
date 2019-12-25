@@ -3,11 +3,14 @@ package com.homework.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.homework.entity.Category;
 import com.homework.entity.Post;
+import com.homework.service.CategoryService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -50,4 +53,23 @@ public class PostController extends  BaseController{
         req.setAttribute("currentCategoryId", id);
         return "post/category";
     }
+
+    @GetMapping("/user/post")
+    public String getPost(){
+
+        String id = req.getParameter("id");
+        Post post = new Post();
+        if(!StringUtils.isEmpty(id)) {
+            post = postService.getById(Long.valueOf(id));
+        }
+
+        List<Category> categories = categoryService.list(new QueryWrapper<Category>().orderByDesc("order_num"));
+
+        req.setAttribute("pid",id);
+        req.setAttribute("post",post);
+        req.setAttribute("categories",categories);
+
+        return "post/add";
+    }
+
 }
