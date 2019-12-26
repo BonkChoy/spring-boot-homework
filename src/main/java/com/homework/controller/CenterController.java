@@ -1,5 +1,7 @@
 package com.homework.controller;
 
+import cn.hutool.core.date.DatePattern;
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.crypto.SecureUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -20,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -123,7 +126,8 @@ public class CenterController extends BaseController{
      */
     @ResponseBody
     @PostMapping("/upload")
-    public R upload(@RequestParam(value = "file") MultipartFile file) {
+    public R upload(@RequestParam(value = "file") MultipartFile file,
+                    @RequestParam(value = "type",defaultValue = "avatar") String type) {
 
         if(file.isEmpty()) {
             return R.failed("上传失败");
@@ -138,7 +142,12 @@ public class CenterController extends BaseController{
         // 文件上传后的路径
         String filePath = Constant.uploadDir;
 
-        fileName = "avatar_" + getProfileId() + suffixName;
+        if ("avatar".equalsIgnoreCase(type)) {
+            fileName = "/avatar/avatar_" + getProfileId() + suffixName;
+
+        } else if ("post".equalsIgnoreCase(type)) {
+            fileName = "/post/post_" + DateUtil.format(new Date(), DatePattern.PURE_DATETIME_MS_PATTERN) + suffixName;
+        }
         File dest = new File(filePath + fileName);
         // 检测是否存在目录
         if (!dest.getParentFile().exists()) {
