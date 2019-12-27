@@ -79,7 +79,7 @@ layui.define('fly', function(exports){
         fly.json('/api/jie-delete/', {
           id: div.data('id')
         }, function(res){
-          if(res.status === 0){
+          if(res.code === 0){
             location.href = '/jie/';
           } else {
             layer.msg(res.msg);
@@ -96,7 +96,7 @@ layui.define('fly', function(exports){
         ,rank: othis.attr('rank')
         ,field: othis.attr('field')
       }, function(res){
-        if(res.status === 0){
+        if(res.code === 0){
           location.reload();
         }
       });
@@ -143,7 +143,7 @@ layui.define('fly', function(exports){
         ok: ok
         ,id: li.data('id')
       }, function(res){
-        if(res.status === 0){
+        if(res.code === 0){
           var zans = othis.find('em').html()|0;
           othis[ok ? 'removeClass' : 'addClass']('zanok');
           othis.find('em').html(ok ? (--zans) : (++zans));
@@ -166,7 +166,7 @@ layui.define('fly', function(exports){
         fly.json('/api/jieda-accept/', {
           id: li.data('id')
         }, function(res){
-          if(res.status === 0){
+          if(res.code === 0){
             $('.jieda-accept').remove();
             li.addClass('jieda-daan');
             li.find('.detail-about').append('<i class="iconfont icon-caina" title="最佳答案"></i>');
@@ -209,7 +209,7 @@ layui.define('fly', function(exports){
         fly.json('/api/jieda-delete/', {
           id: li.data('id')
         }, function(res){
-          if(res.status === 0){
+          if(res.code === 0){
             var count = dom.jiedaCount.text()|0;
             dom.jiedaCount.html(--count);
             li.remove();
