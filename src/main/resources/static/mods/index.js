@@ -281,35 +281,34 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'upload', 'util'], function(
 
         //新消息通知
         ,newmsg: function(){
-            var elemUser = $('.fly-nav-user');
-            if(layui.cache.user.uid !== -1 && elemUser[0]){
-                fly.json('/user/message/nums/', {
-                    _: new Date().getTime()
-                }, function(res){
-                    if(res.code === 0 && res.count > 0){
-                        var msg = $('<a class="fly-nav-msg" href="javascript:;">'+ res.count +'</a>');
-                        elemUser.append(msg);
-                        msg.on('click', function(){
-                            fly.json('/message/read', {}, function(res){
-                                if(res.code === 0){
-                                    location.href = '/user/message/';
-                                }
-                            });
-                        });
-                        layer.tips('你有 '+ res.count +' 条未读消息', msg, {
-                            tips: 3
-                            ,tipsMore: true
-                            ,fixed: true
-                        });
-                        msg.on('mouseenter', function(){
-                            layer.closeAll('tips');
-                        })
+          var elemUser = $('.fly-nav-user');
+          if(layui.cache.user.uid !== -1 && elemUser[0]){
+            fly.json('/user/message/nums/', {
+              _: new Date().getTime()
+            }, function(res){
+              if(res.data.status === 0 && res.data.count > 0){
+                var msg = $('<a class="fly-nav-msg" href="javascript:;">'+ res.data.count +'</a>');
+                elemUser.append(msg);
+                msg.on('click', function(){
+                  fly.json('/message/read', {}, function(res){
+                    if(res.data.status === 0){
+                      location.href = '/user/message/';
                     }
+                  });
                 });
-            }
-            return arguments.callee;
+                layer.tips('你有 '+ res.data.count +' 条未读消息', msg, {
+                  tips: 3
+                  ,tipsMore: true
+                  ,fixed: true
+                });
+                msg.on('mouseenter', function(){
+                  layer.closeAll('tips');
+                })
+              }
+            });
+          }
+          return arguments.callee;
         }
-
     };
 
     //签到

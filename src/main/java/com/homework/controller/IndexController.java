@@ -45,20 +45,28 @@ public class IndexController extends BaseController {
 
     @GetMapping("/")
     public String index() {
-//        Page<Post> page = new Page<>();
-//        page.setCurrent(1);
-//        page.setSize(10);
-//
-//        IPage<Map<String, Object>> pageData = postService.pageMaps(page, null);
-        List<Map<String, Object>> pageData = postService.listMaps(new QueryWrapper<Post>().orderByDesc("level").last(" limit 5 "));
+        Page<Post> page = new Page<>();
+        page.setCurrent(1);
+        page.setSize(10);
+
+        IPage<Map<String, Object>> pageData = postService.pageMaps(page, new QueryWrapper<Post>().orderByDesc("created"));
 
         //添加关联的用户信息
         userService.join(pageData, "user_id");
-
-        //添加关联的分类信息
         categoryService.join(pageData, "category_id");
 
-        req.setAttribute("levelPosts", pageData);
+        req.setAttribute("pageData", pageData);
+
+        log.info("--------------->" + pageData.getRecords());
+        log.info("-------------------------------" + page.getPages());
+
+
+        //置顶文章（取5条）
+        List<Map<String, Object>> levelPosts = postService.listMaps(new QueryWrapper<Post>().orderByDesc("level").last(" limit 5 "));
+        userService.join(levelPosts, "user_id");
+        categoryService.join(levelPosts, "category_id");
+
+        req.setAttribute("levelPosts", levelPosts);
 
         return "index";
     }

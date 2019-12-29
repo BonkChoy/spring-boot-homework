@@ -82,12 +82,12 @@ public class CenterController extends BaseController{
 
     @ResponseBody
     @PostMapping("/message/nums")
-    public Object getMessNums() {
+    public R getMessNums() {
         Map<String, Object> result = new HashMap<>();
         result.put("status", 0);
         result.put("count", 2);
 
-        return result;
+        return R.ok(result);
     }
 
     @ResponseBody

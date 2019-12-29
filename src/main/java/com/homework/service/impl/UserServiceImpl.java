@@ -37,18 +37,26 @@ import java.util.Map;
 public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implements UserService {
 
     @Override
-    public void join(Map<String, Object> map, String linkfield) {
+    public void join(Map<String, Object> map, String field) {
 
-            String userId = map.get(linkfield).toString();
-            User user = this.getById(userId);
+        if(map == null || map.get(field) == null){
+            return;
+        }
 
-            Map<String, Object> author = new HashMap<>();
-            author.put("username", user.getUsername());
-            author.put("email", user.getEmail());
-            author.put("avatar", user.getAvatar());
-            author.put("id", user.getId());
+        Map<String, Object> joinColumns = new HashMap<>();
 
-            map.put("author", author);
+        //字段的值
+        String linkfieldValue = map.get(field).toString();
+
+        User user = this.getById(linkfieldValue);
+
+        joinColumns.put("username", user.getUsername());
+        joinColumns.put("email", user.getEmail());
+        joinColumns.put("avatar", user.getAvatar());
+        joinColumns.put("id", user.getId());
+        joinColumns.put("vipLevel", user.getVipLevel());
+
+        map.put("author", joinColumns);
     }
 
     @Override
