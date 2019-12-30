@@ -16,4 +16,4 @@ spring:
 logging:
   level:
     root: INFO
-    org.springframework.web: WARNING
+    org.springframework.web: DEBUG
