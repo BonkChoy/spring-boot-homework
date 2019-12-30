@@ -1,6 +1,8 @@
 package com.homework.config;
 
 import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
+import cn.hutool.core.map.MapUtil;
+import com.homework.shiro.AuthFilter;
 import com.homework.shiro.OAuth2Realm;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.mgt.SecurityManager;
@@ -52,11 +54,13 @@ public class ShiroConfig {
         // 配置未授权跳转页面
         filterFactoryBean.setUnauthorizedUrl("/error/403");
 
+        filterFactoryBean.setFilters(MapUtil.of("user", authFilter()));
+
         Map<String, String> hashMap = new LinkedHashMap<>();
         hashMap.put("/login", "anon");
         hashMap.put("/user*", "user");
         hashMap.put("/user/**", "user");
-        hashMap.put("/post/**", "user");
+        //hashMap.put("/post/**", "user");
         //hashMap.put("/error**", "anon");
         //hashMap.put("/templates/**", "user");
         filterFactoryBean.setFilterChainDefinitionMap(hashMap);
@@ -68,5 +72,10 @@ public class ShiroConfig {
     @Bean
     public ShiroDialect shiroDialect() {
         return new ShiroDialect();
+    }
+
+    @Bean
+    public AuthFilter authFilter() {
+        return new AuthFilter();
     }
 }
