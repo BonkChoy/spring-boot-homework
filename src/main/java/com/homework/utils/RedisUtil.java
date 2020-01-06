@@ -1,12 +1,13 @@
 package com.homework.utils;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
+import cn.hutool.core.date.DatePattern;
+import cn.hutool.core.date.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
@@ -76,7 +77,7 @@ public class RedisUtil {
         }
     }
 
-    //============================String=============================  
+    //============================String=============================
 
     /**
      * 普通缓存获取
@@ -156,7 +157,7 @@ public class RedisUtil {
         return redisTemplate.opsForValue().increment(key, -delta);
     }
 
-    //================================Map=================================  
+    //================================Map=================================
 
     /**
      * HashGet
@@ -302,7 +303,7 @@ public class RedisUtil {
         return redisTemplate.opsForHash().increment(key, item, -by);
     }
 
-    //============================set=============================  
+    //============================set=============================
 
     /**
      * 根据key获取Set中的所有值
@@ -401,7 +402,7 @@ public class RedisUtil {
             return 0;
         }
     }
-    //===============================list=================================  
+    //===============================list=================================
 
     /**
      * 获取list缓存的内容
@@ -560,4 +561,57 @@ public class RedisUtil {
             return 0;
         }
     }
+
+    //================有序集合 sort set===================
+    /**
+     * 有序set添加元素
+     *
+     * @param key
+     * @param value
+     * @param score
+     * @return
+     */
+    public boolean zSet(String key, Object value, double score) {
+        return redisTemplate.opsForZSet().add(key, value, score);
+    }
+
+    public long batchZSet(String key, Set<ZSetOperations.TypedTuple> typles) {
+        return redisTemplate.opsForZSet().add(key, typles);
+    }
+
+    public void zIncrementScore(String key, Object value, long delta) {
+        redisTemplate.opsForZSet().incrementScore(key, value, delta);
+    }
+
+    public void zUnionAndStore(String key, Collection otherKeys, String destKey) {
+        redisTemplate.opsForZSet().unionAndStore(key, otherKeys, destKey);
+    }
+
+    /**
+     * 获取zset数量
+     * @param key
+     * @param value
+     * @return
+     */
+    public long getZsetScore(String key, Object value) {
+        Double score = redisTemplate.opsForZSet().score(key, value);
+        if(score==null){
+            return 0;
+        }else{
+            return score.longValue();
+        }
+    }
+
+    /**
+     * 获取有序集 key 中成员 member 的排名 。
+     * 其中有序集成员按 score 值递减 (从大到小) 排序。
+     * @param key
+     * @param start
+     * @param end
+     * @return
+     */
+    public Set<ZSetOperations.TypedTuple> getZSetRank(String key, long start, long end) {
+        return redisTemplate.opsForZSet().reverseRangeWithScores(key, start, end);
+    }
+
 }
